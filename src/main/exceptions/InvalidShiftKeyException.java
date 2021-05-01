@@ -1,4 +1,4 @@
 package exceptions;
 
-public class InvalidShiftKeyException extends Exception {
+public class InvalidShiftKeyException extends InvalidInputException {
 }

@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.InvalidChoiceException;
 import exceptions.InvalidShiftKeyException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ public class CipherAlgorithmTests {
     private final String testOutput = "Vh wjvn rb Axqjw Sxbnyq";
     private final String encode = "encode";
     private final String decode = "decode";
+    private final String invalidChoice = "invalidChoice";
     private final int validShiftKey = 9;
     private final int invalidShiftKeyUpperBound = 29;
     private final int invalidShiftKeyLowerBound = -5;
@@ -26,8 +28,9 @@ public class CipherAlgorithmTests {
     @Test
     public void testEncodeAlgorithm() {
         try {
-            assertTrue(testEncodeAlgorithm.algorithm(encode, validShiftKey));
-        } catch (InvalidShiftKeyException e) {
+            assertTrue(testEncodeAlgorithm.runCipher(encode, validShiftKey));
+            assertEquals(testEncodeAlgorithm.returnResult(), testOutput);
+        } catch (InvalidShiftKeyException | InvalidChoiceException e) {
             fail("Exception should not have been caught!");
         }
     }
@@ -35,15 +38,21 @@ public class CipherAlgorithmTests {
     @Test
     public void testEncodeAlgorithmInvalidShiftKeyExceptionThrown() {
         try {
-            testEncodeAlgorithm.algorithm(encode, invalidShiftKeyLowerBound);
+            assertFalse(testEncodeAlgorithm.runCipher(encode, invalidShiftKeyLowerBound));
             fail("Exception should have been thrown!");
-        } catch (InvalidShiftKeyException e) {
+        } catch (InvalidShiftKeyException | InvalidChoiceException e) {
             //pass
         }
         try {
-            testEncodeAlgorithm.algorithm(encode, invalidShiftKeyUpperBound);
+            assertFalse(testEncodeAlgorithm.runCipher(encode, invalidShiftKeyUpperBound));
             fail("Exception should have been thrown!");
-        } catch (InvalidShiftKeyException e) {
+        } catch (InvalidShiftKeyException | InvalidChoiceException e) {
+            //pass
+        }
+        try {
+            assertFalse(testEncodeAlgorithm.runCipher(invalidChoice, validShiftKey));
+            fail("Exception should have been thrown!");
+        } catch (InvalidShiftKeyException | InvalidChoiceException e) {
             //pass
         }
     }
@@ -51,8 +60,9 @@ public class CipherAlgorithmTests {
     @Test
     public void testDecodeAlgorithm() {
         try {
-            assertTrue(testDecodeAlgorithm.algorithm(decode, validShiftKey));
-        } catch (InvalidShiftKeyException e) {
+            assertTrue(testDecodeAlgorithm.runCipher(decode, validShiftKey));
+            assertEquals(testDecodeAlgorithm.returnResult(), testInput);
+        } catch (InvalidShiftKeyException | InvalidChoiceException e) {
             fail("Exception should not have been caught!");
         }
     }
@@ -60,15 +70,21 @@ public class CipherAlgorithmTests {
     @Test
     public void testDecodeAlgorithmInvalidShiftKeyExceptionThrown() {
         try {
-            testDecodeAlgorithm.algorithm(decode, invalidShiftKeyLowerBound);
+            assertFalse(testDecodeAlgorithm.runCipher(decode, invalidShiftKeyLowerBound));
             fail("Exception should have been thrown!");
-        } catch (InvalidShiftKeyException e) {
+        } catch (InvalidShiftKeyException | InvalidChoiceException e) {
             //pass
         }
         try {
-            testDecodeAlgorithm.algorithm(decode, invalidShiftKeyUpperBound);
+            assertFalse(testDecodeAlgorithm.runCipher(decode, invalidShiftKeyUpperBound));
             fail("Exception should have been thrown!");
-        } catch (InvalidShiftKeyException e) {
+        } catch (InvalidShiftKeyException | InvalidChoiceException e) {
+            //pass
+        }
+        try {
+            assertFalse(testDecodeAlgorithm.runCipher(invalidChoice, validShiftKey));
+            fail("Exception should have been thrown");
+        } catch (InvalidShiftKeyException | InvalidChoiceException e) {
             //pass
         }
     }
@@ -76,9 +92,9 @@ public class CipherAlgorithmTests {
     @Test
     public void testReturnOutputAfterEncode() {
         try {
-            testEncodeAlgorithm.algorithm(encode, validShiftKey);
+            testEncodeAlgorithm.runCipher(encode, validShiftKey);
             assertEquals(testEncodeAlgorithm.returnResult(), testOutput);
-        } catch (InvalidShiftKeyException e) {
+        } catch (InvalidShiftKeyException | InvalidChoiceException e) {
             fail("Exception should not have been caught!");
         }
     }
@@ -86,9 +102,9 @@ public class CipherAlgorithmTests {
     @Test
     public void testReturnInputAfterDecode() {
         try {
-            testDecodeAlgorithm.algorithm(decode, validShiftKey);
+            testDecodeAlgorithm.runCipher(decode, validShiftKey);
             assertEquals(testDecodeAlgorithm.returnResult(), testInput);
-        } catch (InvalidShiftKeyException e) {
+        } catch (InvalidShiftKeyException | InvalidChoiceException e) {
             fail("Exception should not have been caught!");
         }
     }
