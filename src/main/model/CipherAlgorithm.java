@@ -50,6 +50,8 @@ public class CipherAlgorithm {
             Character c = input.charAt(i);
             if (c == EMPTY) {
                 resultString.append(c);
+            } else if (!isLetter(c)) {
+                resultString.append(c);
             } else {
                 int index = alphabetList.indexOf(toLowerCase(c));
                 int shift = getShiftNum(choice, index, shiftKey);
@@ -92,6 +94,5 @@ public class CipherAlgorithm {
             alphabetList.add(alphabets.charAt(i));
         }
     }
-
 
 }
