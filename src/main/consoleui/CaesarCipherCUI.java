@@ -168,7 +168,8 @@ public class CaesarCipherCUI {
     //EFFECTS: Displays the input and output text of the CaesarCipher algorithm
     private void display(String input, String output) {
         System.out.println("Input: " + input);
-        System.out.println("Output: " + output + "\n");
+        System.out.println("Output: " + output + " \n");
+        System.out.println();
     }
 
 }
