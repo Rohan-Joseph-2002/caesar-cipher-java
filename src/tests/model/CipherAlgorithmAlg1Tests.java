@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CipherAlgorithmTests {
+public class CipherAlgorithmAlg1Tests {
     private final String testInput = "My name is Rohan Joseph! - 2002 ;)";
     private final String testOutput = "Vh wjvn rb Axqjw Sxbnyq! - 2002 ;)";
     private final String encode = "encode";
@@ -17,13 +17,13 @@ public class CipherAlgorithmTests {
     private final int validShiftKey = 9;
     private final int invalidShiftKeyUpperBound = 29;
     private final int invalidShiftKeyLowerBound = -5;
-    private CipherAlgorithm testEncodeAlgorithm;
-    private CipherAlgorithm testDecodeAlgorithm;
+    private CipherAlgorithmAlg1 testEncodeAlgorithm;
+    private CipherAlgorithmAlg1 testDecodeAlgorithm;
 
     @BeforeEach
     public void setup() {
-        testEncodeAlgorithm = new CipherAlgorithm(testInput);
-        testDecodeAlgorithm = new CipherAlgorithm(testOutput);
+        testEncodeAlgorithm = new CipherAlgorithmAlg1(testInput);
+        testDecodeAlgorithm = new CipherAlgorithmAlg1(testOutput);
     }
 
     @Test

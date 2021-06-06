@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 import static java.lang.Character.*;
 
-public class CipherAlgorithm {
+public class CipherAlgorithmAlg1 {
     private final String input;
     private String result;
     private static final Character EMPTY = ' ';
@@ -17,7 +17,7 @@ public class CipherAlgorithm {
 
     //MODIFIES: this
     //EFFECTS: CipherAlgorithm constructor
-    public CipherAlgorithm(String userInput) {
+    public CipherAlgorithmAlg1(String userInput) {
         this.input = userInput;
         this.result = "";
         alphabetList = new LinkedList<>();

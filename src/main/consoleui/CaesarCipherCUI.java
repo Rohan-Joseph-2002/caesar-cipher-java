@@ -1,7 +1,7 @@
 package consoleui;
 
 import exceptions.InvalidInputException;
-import model.CipherAlgorithm;
+import model.CipherAlgorithmAlg1;
 
 import java.util.Scanner;
 
@@ -79,7 +79,7 @@ public class CaesarCipherCUI {
     //EFFECTS: Encodes or Decodes a given text with a given shift key using the CaesarCipher algorithm
     private void runCaesarCipherEncoderDecoderWithShiftKey(String choice, String input, int shiftKey) {
         boolean displayResult = false;
-        CipherAlgorithm cipherInput = new CipherAlgorithm(input);
+        CipherAlgorithmAlg1 cipherInput = new CipherAlgorithmAlg1(input);
         if (choice.equalsIgnoreCase("encode")) {
             try {
                 cipherInput.runCipher("encode", shiftKey);
@@ -109,7 +109,7 @@ public class CaesarCipherCUI {
     private void runDecoderWithoutShiftKey() {
         String input = getInput();
         System.out.println();
-        CipherAlgorithm decodeWithoutKey = new CipherAlgorithm(input);
+        CipherAlgorithmAlg1 decodeWithoutKey = new CipherAlgorithmAlg1(input);
         displayAllPossibleOptions(decodeWithoutKey);
         runCaesarCipherEncoderDecoderWithShiftKey("decode", input, decodeWithoutKeyShiftKey);
     }
@@ -117,7 +117,7 @@ public class CaesarCipherCUI {
     //MODIFIES this
     //EFFECTS: Displays all the possible outputs for decryption based on all possible values of the shift key
     //           (which in the case of the CaesarCipher algorithm are values that lie in [0, 26])
-    private void displayAllPossibleOptions(CipherAlgorithm decodeWithoutKey) {
+    private void displayAllPossibleOptions(CipherAlgorithmAlg1 decodeWithoutKey) {
         for (int i = 0; i <= 26; i++) {
             try {
                 decodeWithoutKey.runCipher("decode", i);
