@@ -13,6 +13,7 @@ import static java.lang.Integer.parseInt;
 public class CaesarCipherCUI {
     private Scanner scanner;
     private boolean shouldRun = true;
+    private int shiftKey;
     private int decodeWithoutKeyShiftKey;
 
     //NOTE: The following Instants are used simply to test the speed if the
@@ -83,18 +84,20 @@ public class CaesarCipherCUI {
     //EFFECTS: Encodes a given text using a given shift key and the CaesarCipher algorithm
     private void runEncoderWithShiftKey() {
         String input = getInput();
-        int shiftKey = getShiftKey();
+        getShiftKey();
+        int key = shiftKey;
         startEncode = Instant.now();
-        runCaesarCipherEncoderDecoderWithShiftKey("encode", input, shiftKey);
+        runCaesarCipherEncoderDecoderWithShiftKey("encode", input, key);
     }
 
     //MODIFIES: this
     //EFFECTS: Decodes a given text using a given shift key and the CaesarCipher algorithm
     private void runDecoderWithShiftKey() {
         String input = getInput();
-        int shiftKey = getShiftKey();
+        getShiftKey();
+        int key = shiftKey;
         startDecodeWithKey = Instant.now();
-        runCaesarCipherEncoderDecoderWithShiftKey("decode", input, shiftKey);
+        runCaesarCipherEncoderDecoderWithShiftKey("decode", input, key);
     }
 
     //MODIFIES: this
@@ -116,7 +119,7 @@ public class CaesarCipherCUI {
         String output = cipherInput.returnResult();
         if (displayResult && choice.equalsIgnoreCase("encode")) {
             display(input, output, encodeTimeElapsed);
-        } else {
+        } else if (displayResult && choice.equalsIgnoreCase("decode")) {
             display(input, output, decodeTimeElapsed);
         }
     }
@@ -199,11 +202,15 @@ public class CaesarCipherCUI {
     }
 
     //EFFECTS: Get user input shift key
-    private int getShiftKey() {
+    private void getShiftKey() {
         System.out.println("\n Please input a shift key:");
         scanner = new Scanner(System.in);
         String shift = scanner.nextLine();
-        return parseInt(shift);
+        try {
+            shiftKey = parseInt(shift);
+        } catch (NumberFormatException e) {
+            System.out.println("\n Invalid shift key!");
+        }
     }
 
     //MODIFIES: this
