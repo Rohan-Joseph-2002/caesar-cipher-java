@@ -223,7 +223,7 @@ public class CaesarCipherCUI {
     }
 
     //EFFECTS: Prints a console message indicating that a given shift key value is
-    //         out of bounds.
+    //         out of bounds
     private void printOutOfBoundsShiftKeyMessage() {
         System.out.println("\n A given shift key must be in between 0 and 26 inclusive! \n");
     }
