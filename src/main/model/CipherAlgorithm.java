@@ -90,7 +90,7 @@ public class CipherAlgorithm {
     //EFFECTS: Adds every single alphabet to the linked list as singular characters
     private void generateAlphabetList() {
         String alphabets = "abcdefghijklmnopqrstuvwxyz";
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < alphabets.length(); i++) {
             alphabetList.add(alphabets.charAt(i));
         }
     }

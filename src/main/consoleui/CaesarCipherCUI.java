@@ -5,6 +5,7 @@ import model.CipherAlgorithm;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
@@ -25,9 +26,15 @@ public class CaesarCipherCUI {
     private Instant startDecodeWithoutKeyPart2;
     private Instant endDecodeWithoutKeyPart2;
 
+    //NOTE: Saves all of the possible decoded strings for when the runDecoderWithoutShiftKey()
+    //      method is run. This saves time, in that we do not need to pass an encoded value
+    //      again through the algorithm.
+    private final HashMap<Integer, String> allPossibleDecodedOptions;
+
     //EFFECTS: Constructor and runs the Caesar Cipher
     public CaesarCipherCUI() {
         scanner = new Scanner(System.in);
+        allPossibleDecodedOptions = new HashMap<>();
         runCaesarCipher();
     }
 
@@ -93,26 +100,16 @@ public class CaesarCipherCUI {
     //MODIFIES: this
     //EFFECTS: Encodes or Decodes a given text with a given shift key using the CaesarCipher algorithm
     private void runCaesarCipherEncoderDecoderWithShiftKey(String choice, String input, int shiftKey) {
-        boolean displayResult = false;
+        boolean displayResult;
         long encodeTimeElapsed = 0;
         long decodeTimeElapsed = 0;
         CipherAlgorithm cipherInput = new CipherAlgorithm(input);
         if (choice.equalsIgnoreCase("encode")) {
-            try {
-                cipherInput.runCipher("encode", shiftKey);
-                displayResult = true;
-            } catch (InvalidInputException e) {
-                printOutOfBoundsShiftKeyMessage();
-            }
+            displayResult = displayCipherResult(shiftKey, cipherInput, "encode");
             endEncode = Instant.now();
             encodeTimeElapsed = Duration.between(startEncode, endEncode).toMillis();
         } else {
-            try {
-                cipherInput.runCipher("decode", shiftKey);
-                displayResult = true;
-            } catch (InvalidInputException e) {
-                printOutOfBoundsShiftKeyMessage();
-            }
+            displayResult = displayCipherResult(shiftKey, cipherInput, "decode");
             endDecodeWithKey = Instant.now();
             decodeTimeElapsed = Duration.between(startDecodeWithKey, endDecodeWithKey).toMillis();
         }
@@ -125,6 +122,21 @@ public class CaesarCipherCUI {
     }
 
     //MODIFIES: this
+    //EFFECTS: Runs the CipherAlgorithm on a given input and shift key, and returns true.
+    //         If the InvalidInputException is caught, print the shift key out of bounds
+    //         message and return false.
+    private boolean displayCipherResult(int shiftKey, CipherAlgorithm cipherInput, String input) {
+        boolean displayResult = false;
+        try {
+            cipherInput.runCipher(input, shiftKey);
+            displayResult = true;
+        } catch (InvalidInputException e) {
+            printOutOfBoundsShiftKeyMessage();
+        }
+        return displayResult;
+    }
+
+    //MODIFIES: this
     //EFFECTS: Decodes a given text without a given shift key, using the CaesarCipher algorithm to decode the text
     //           using every single possible shift key value, output all the possible results, and allow the user
     //           to pick the solution they wish.
@@ -134,14 +146,8 @@ public class CaesarCipherCUI {
         startDecodeWithoutKeyPart1 = Instant.now();
         CipherAlgorithm decodeWithoutKey = new CipherAlgorithm(input);
         displayAllPossibleOptions(decodeWithoutKey);
-        CipherAlgorithm cipherInput = new CipherAlgorithm(input);
-        try {
-            cipherInput.runCipher("encode", decodeWithoutKeyShiftKey);
-        } catch (InvalidInputException e) {
-            printOutOfBoundsShiftKeyMessage();
-        }
+        String output = allPossibleDecodedOptions.get(decodeWithoutKeyShiftKey);
         endDecodeWithoutKeyPart2 = Instant.now();
-        String output = cipherInput.returnResult();
         long decodeWithoutKeyTimeElapsed =
                 Duration.between(startDecodeWithoutKeyPart1, endDecodeWithoutKeyPart1).toMillis()
                 + Duration.between(startDecodeWithoutKeyPart2, endDecodeWithoutKeyPart2).toMillis();
@@ -158,6 +164,7 @@ public class CaesarCipherCUI {
                 String num = Integer.toString(i);
                 String output = decodeWithoutKey.returnResult();
                 System.out.println("Shift Key (" + num + ") : " + output);
+                allPossibleDecodedOptions.put(i, output);
             } catch (InvalidInputException e) {
                 printOutOfBoundsShiftKeyMessage();
             }
